@@ -1,5 +1,7 @@
-# require 'rails_helper'
-#
-# RSpec.describe Category, type: :model do
-#   it { should have_many(:products) }
-# end
+require 'rails_helper'
+
+RSpec.describe Category, type: :model do
+  describe 'Association'  do
+    it { should have_many(:products) }
+  end
+end
