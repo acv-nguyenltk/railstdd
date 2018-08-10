@@ -12,7 +12,7 @@ class Product < ApplicationRecord
 
   def title_shorter_than_description
 
-    if title.present? && description.present? && self.title.length > self.description.length
+    if title.present? && description.present? && title.length > description.length
       errors.add(:title, "have to be shorter than Desciption")
       # throw(:abort)
     end
