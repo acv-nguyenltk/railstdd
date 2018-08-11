@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Product, type: :model do
   fields = ['title', 'description', 'price']
   before(:each) do
-  @product = Product.create(title: 'AAA', description: '<h1> Desciption <h1>', price: 12)
+    @product = Product.create(title: 'AAA', description: '<h1> Desciption <h1>', price: 12)
   end
 
     describe 'Association'  do
