@@ -25,7 +25,7 @@ class ProductsController < ApplicationController
     @product = Product.create(product_params)
     return redirect_to products_url, notice: 'Created' if @product.save
       flash.now[:notice] = 'Not yet'
-    render :new
+    render :newx
   end
 
   def destroy
