@@ -17,20 +17,20 @@ class ProductsController < ApplicationController
 
   def update
     return redirect_to products_url, notice: 'Updated' if @product.update(product_params)
-      flash[:notice] = "Not yet"
+      flash.now[:notice] = "Not yet"
     render :new
   end
 
   def create
     @product = Product.create(product_params)
     return redirect_to products_url, notice: 'Created' if @product.save
-      flash[:notice] = 'Not yet'
+      flash.now[:notice] = 'Not yet'
     render :new
   end
 
   def destroy
     return redirect_to products_url, notice: 'Deleted' if @product.destroy
-      flash[:notice] = 'Not yet'
+    flash.now[:notice] = 'Not yet'
     redirect_to products_url
   end
 

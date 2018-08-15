@@ -50,18 +50,20 @@ RSpec.describe ProductsController, type: :controller do
       it 'redirects to the new product' do
         post :create, params: { product: product_attr }
         expect(response).to redirect_to products_path
+        expect(flash.now[:notice]).to include('Created')
       end
     end
 
     context 'with invalid attributes' do
       it 'does not save the new product' do
         expect{
-          post :create, params: { product: product_attr.merge(title: nil) }
+          post :create, params: { product: { title: nil } }
         }.to_not change(Product,:count)
       end
       it 'renders the new method' do
-        post :create, params: { product: product_attr.merge(title: nil) }
+        post :create, params: { product: { title: nil } }
         expect(response).to render_template :new
+        expect(flash.now[:notice]).to include('Not yet')
       end
     end
   end
@@ -89,33 +91,34 @@ RSpec.describe ProductsController, type: :controller do
       end
       it 'redirect_to products_url' do
         expect(response).to redirect_to products_path
+        expect(flash.now[:notice]).to include('Updated')
       end
     end
-    # context 'with invalid attributes' do
-    #   before (:each) do
-    #     binding.pry
-    #     put :update, params: { id: product.id,
-    #       product: product }
-    #     product.reload
-    #   end
-    #   it 'update not yet' do
-    #     expect{ assigns(:product) }.to eq product
-    #   end
-    #   it 'redirect_to products_url' do
-    #     expect(response).to redirect_to :new
-    #   end
-    # end
+    context 'with invalid attributes' do
+      before (:each) do
+        put :update, params: { id: product.id,
+          product: { title: nil } }
+        product.reload
+      end
+      it 'update not yet' do
+        expect{ assigns(:product) }.to_not change(product, :title)
+      end
+      it 'redirect_to products_url' do
+        expect(response).to render_template :new
+        expect(flash.now[:notice]).to include('Not yet')
+      end
+    end
   end
 
   describe 'Delete #destroy' do
     it 'delete product' do
-      expect{
         delete :destroy, params: { id: product.id }
-      }.to change(Product, :count).by(0)
+        expect(Product.exists?(product.id)).to eq(false)
     end
     it 'redirects to the products_url' do
       delete :destroy, params: { id: product.id }
       expect(response).to redirect_to products_path
+      expect(flash.now[:notice]).to include('Deleted')
     end
   end
 end
